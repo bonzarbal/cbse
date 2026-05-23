@@ -7,7 +7,7 @@ import requests
 
 LANDING_URL = "https://cbseresults.nic.in/class_xii_b_2026_a/ClassTwelfth_ii26.htm"
 POST_URL = "https://cbseresults.nic.in/class_xii_b_2026_a/ClassTwelfth_ii_2026.asp"
-FIXED_SCHOOL_NO = ""
+school_no = input("Enter School Number: ").strip()
 MAX_THREADS = 20
 
 def derive_admit_card_id(prefix, roll_no, school_no, centre_middle_two):
@@ -69,7 +69,7 @@ def parse_and_format_result(html_text, roll_no, matched_admid):
 
 def test_prefix_worker(prefix, roll_no, mid_digits, token_pool):
     """Worker function designed to execute an isolated concurrent guess."""
-    admid = derive_admit_card_id(prefix, roll_no, FIXED_SCHOOL_NO, mid_digits)
+    admid = derive_admit_card_id(prefix, roll_no, school_no, mid_digits)
     token = random.choice(token_pool) if token_pool else {"as_sfid": "", "as_fid": ""}
     
     headers = {
@@ -78,7 +78,7 @@ def test_prefix_worker(prefix, roll_no, mid_digits, token_pool):
     }
     payload = {
         "regno": str(roll_no),
-        "sch": str(FIXED_SCHOOL_NO),
+        "sch": str(school_no),
         "admid": admid,
         "B2": "Submit",
         "as_sfid": token["as_sfid"],
