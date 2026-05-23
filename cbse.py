@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import requests
+import random
 
 LANDING_URL = "https://cbseresults.nic.in/class_xii_b_2026_a/ClassTwelfth_ii26.htm"
 POST_URL = "https://cbseresults.nic.in/class_xii_b_2026_a/ClassTwelfth_ii_2026.asp"
@@ -93,10 +94,7 @@ def test_prefix_worker(prefix, roll_no, school_no, mid_digits, token_pool):
     return None
 
 if __name__ == "__main__":
-    import random
     print("=== CBSE HYPER-THREADED TURBO CHECKER ===")
-    
-    # Dynamic inputs asked right at prompt initiation
     school_input = input("Enter School Number: ").strip()
     roll_input = input("Enter Roll Number OR Range (e.g., 15624517): ").strip()
     mid_digits = input("Enter the 2 middle digits of Centre No (e.g., 22): ").strip()
@@ -127,7 +125,6 @@ if __name__ == "__main__":
         match_found = False
         
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-            # Passes your dynamic console school entry straight to the tracking worker threads
             futures = [executor.submit(test_prefix_worker, pref, current_roll, school_input, mid_digits, token_pool) for pref in all_prefixes]
             
             for future in concurrent.futures.as_completed(futures):
